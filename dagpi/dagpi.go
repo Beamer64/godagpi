@@ -14,10 +14,8 @@ type Client struct {
 	Auth string
 }
 
-var client = Client{}
-
 // request to get data
-func httpGet(url string) (map[string]interface{}, error) {
+func httpGet(url string, c *Client) (map[string]interface{}, error) {
 	httpClient := &http.Client{}
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -25,7 +23,7 @@ func httpGet(url string) (map[string]interface{}, error) {
 		return nil, err
 	}
 
-	req.Header.Add("Authorization", client.Auth)
+	req.Header.Add("Authorization", c.Auth)
 	resp, err := httpClient.Do(req)
 	if err != nil {
 		return nil, err
@@ -50,7 +48,7 @@ func httpGet(url string) (map[string]interface{}, error) {
 }
 
 // Attempting to get an image's buffer
-func getImageBuffer(url string) ([]byte, error) {
+func getImageBuffer(url string, c *Client) ([]byte, error) {
 	httpClient := &http.Client{}
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -58,7 +56,7 @@ func getImageBuffer(url string) ([]byte, error) {
 		return nil, err
 	}
 
-	req.Header.Add("Authorization", client.Auth)
+	req.Header.Add("Authorization", c.Auth)
 	resp, err := httpClient.Do(req)
 	if err != nil {
 		return nil, err
@@ -83,8 +81,8 @@ func getImageBuffer(url string) ([]byte, error) {
 
 // WTP returns an interface with all the Pokemon data
 // Docs: https://dagpi.docs.apiary.io/#reference/data-api/whos-that-pokemon/who's-that-pokemon?
-func WTP() (interface{}, error) {
-	data, err := httpGet("https://api.dagpi.xyz/data/wtp")
+func (c *Client) WTP() (interface{}, error) {
+	data, err := httpGet("https://api.dagpi.xyz/data/wtp", c)
 	if err != nil {
 		return nil, err
 	}
@@ -94,8 +92,8 @@ func WTP() (interface{}, error) {
 
 // Roast returns an interface containing a roast
 // Docs: https://dagpi.docs.apiary.io/#reference/data-api/roast/roast
-func Roast() (interface{}, error) {
-	data, err := httpGet("https://api.dagpi.xyz/data/roast")
+func (c *Client) Roast() (interface{}, error) {
+	data, err := httpGet("https://api.dagpi.xyz/data/roast", c)
 	roast := data["roast"]
 	if err != nil {
 		return nil, err
@@ -106,8 +104,8 @@ func Roast() (interface{}, error) {
 
 // Joke returns an interface containing a joke & id
 // Docs: https://dagpi.docs.apiary.io/#reference/data-api/joke/joke
-func Joke() (interface{}, error) {
-	data, err := httpGet("https://api.dagpi.xyz/data/joke")
+func (c *Client) Joke() (interface{}, error) {
+	data, err := httpGet("https://api.dagpi.xyz/data/joke", c)
 	if err != nil {
 		return nil, err
 	}
@@ -117,8 +115,8 @@ func Joke() (interface{}, error) {
 
 // Fact returns an interface containing a fact
 // Docs: https://dagpi.docs.apiary.io/#reference/data-api/fact/fact
-func Fact() (interface{}, error) {
-	data, err := httpGet("https://api.dagpi.xyz/data/fact")
+func (c *Client) Fact() (interface{}, error) {
+	data, err := httpGet("https://api.dagpi.xyz/data/fact", c)
 	fact := data["fact"]
 	if err != nil {
 		return nil, err
@@ -129,8 +127,8 @@ func Fact() (interface{}, error) {
 
 // Eightball returns an interface containing a response to 8ball question
 // Docs: https://dagpi.docs.apiary.io/#reference/data-api/8ball/8ball
-func Eightball() (interface{}, error) {
-	data, err := httpGet("https://api.dagpi.xyz/data/8ball")
+func (c *Client) Eightball() (interface{}, error) {
+	data, err := httpGet("https://api.dagpi.xyz/data/8ball", c)
 	response := data["response"]
 	if err != nil {
 		return nil, err
@@ -141,8 +139,8 @@ func Eightball() (interface{}, error) {
 
 // Yomama returns an interface containing a description of yomama
 // Docs: https://dagpi.docs.apiary.io/#reference/data-api/yomama/yomama
-func Yomama() (interface{}, error) {
-	data, err := httpGet("https://api.dagpi.xyz/data/yomama")
+func (c *Client) Yomama() (interface{}, error) {
+	data, err := httpGet("https://api.dagpi.xyz/data/yomama", c)
 	description := data["description"]
 	if err != nil {
 		return nil, err
@@ -153,8 +151,8 @@ func Yomama() (interface{}, error) {
 
 // RandomWaifu returns an interface containing data of a random waifu
 // Docs: https://dagpi.docs.apiary.io/#reference/data-api/random-waifu/random-waifu
-func RandomWaifu() (interface{}, error) {
-	data, err := httpGet("https://api.dagpi.xyz/data/waifu")
+func (c *Client) RandomWaifu() (interface{}, error) {
+	data, err := httpGet("https://api.dagpi.xyz/data/waifu", c)
 	if err != nil {
 		return nil, err
 	}
@@ -164,8 +162,8 @@ func RandomWaifu() (interface{}, error) {
 
 // Waifu returns an interface containing data of a given waifu
 // Docs: https://dagpi.docs.apiary.io/#reference/data-api/waifu-saerch/waifu-saerch
-func Waifu(waifuName string) (interface{}, error) {
-	data, err := httpGet("https://api.dagpi.xyz/data/" + waifuName)
+func (c *Client) Waifu(waifuName string) (interface{}, error) {
+	data, err := httpGet("https://api.dagpi.xyz/data/"+waifuName, c)
 	if err != nil {
 		return nil, err
 	}
@@ -175,8 +173,8 @@ func Waifu(waifuName string) (interface{}, error) {
 
 // PickupLine returns an interface containing category & joke
 // Docs: https://dagpi.docs.apiary.io/#reference/data-api/pickup-line/pickup-line
-func PickupLine() (interface{}, error) {
-	data, err := httpGet("https://api.dagpi.xyz/data/pickupline")
+func (c *Client) PickupLine() (interface{}, error) {
+	data, err := httpGet("https://api.dagpi.xyz/data/pickupline", c)
 	if err != nil {
 		return nil, err
 	}
@@ -186,8 +184,8 @@ func PickupLine() (interface{}, error) {
 
 // HeadLine returns an interface containing text and a bool, 'fake'
 // Docs: https://dagpi.docs.apiary.io/#reference/data-api/headline/headline
-func HeadLine() (interface{}, error) {
-	data, err := httpGet("https://api.dagpi.xyz/data/headline")
+func (c *Client) HeadLine() (interface{}, error) {
+	data, err := httpGet("https://api.dagpi.xyz/data/headline", c)
 	if err != nil {
 		return nil, err
 	}
@@ -197,8 +195,8 @@ func HeadLine() (interface{}, error) {
 
 // GTL returns an interface containing data of a random logo (Guess the Logo)
 // Docs: https://dagpi.docs.apiary.io/#reference/data-api/guess-the-logo/guess-the-logo
-func GTL() (interface{}, error) {
-	data, err := httpGet("https://api.dagpi.xyz/data/logo")
+func (c *Client) GTL() (interface{}, error) {
+	data, err := httpGet("https://api.dagpi.xyz/data/logo", c)
 	if err != nil {
 		return nil, err
 	}
@@ -208,8 +206,8 @@ func GTL() (interface{}, error) {
 
 // Flag returns an interface containing data of a random flag
 // Docs: https://dagpi.docs.apiary.io/#reference/data-api/flag/flag
-func Flag() (interface{}, error) {
-	data, err := httpGet("https://api.dagpi.xyz/data/flag")
+func (c *Client) Flag() (interface{}, error) {
+	data, err := httpGet("https://api.dagpi.xyz/data/flag", c)
 	if err != nil {
 		return nil, err
 	}
@@ -219,8 +217,8 @@ func Flag() (interface{}, error) {
 
 // Captcha get a random captcha and answer
 // Docs: https://dagpi.docs.apiary.io/#reference/data-api/captcha/captcha
-func Captcha() (interface{}, error) {
-	data, err := httpGet("https://api.dagpi.xyz/data/captcha")
+func (c *Client) Captcha() (interface{}, error) {
+	data, err := httpGet("https://api.dagpi.xyz/data/captcha", c)
 	if err != nil {
 		return nil, err
 	}
@@ -230,8 +228,8 @@ func Captcha() (interface{}, error) {
 
 // Typeracer get a sentence on an image, with a sentence to create typeracer games
 // Docs: https://dagpi.docs.apiary.io/#reference/data-api/typeracer/typeracer
-func Typeracer() (interface{}, error) {
-	data, err := httpGet("https://api.dagpi.xyz/data/typeracer")
+func (c *Client) Typeracer() (interface{}, error) {
+	data, err := httpGet("https://api.dagpi.xyz/data/typeracer", c)
 	if err != nil {
 		return nil, err
 	}
@@ -245,8 +243,8 @@ func Typeracer() (interface{}, error) {
 
 // Pixelate Allows you to pixelate an image.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/pixel/pixel
-func Pixelate(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/pixel/?url=" + url)
+func (c *Client) Pixelate(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/pixel/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -256,8 +254,8 @@ func Pixelate(url string) ([]byte, error) {
 
 // Mirror an image along the y-axis
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/mirror/mirror
-func Mirror(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/mirror/?url=" + url)
+func (c *Client) Mirror(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/mirror/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -267,8 +265,8 @@ func Mirror(url string) ([]byte, error) {
 
 // FlipImage flip an image
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/flip/flip
-func FlipImage(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/flip/?url=" + url)
+func (c *Client) FlipImage(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/flip/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -278,8 +276,8 @@ func FlipImage(url string) ([]byte, error) {
 
 // Colors Allows you to get an Image with the colors present in the image.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/colors/colors
-func Colors(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/colors/?url=" + url)
+func (c *Client) Colors(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/colors/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -289,8 +287,8 @@ func Colors(url string) ([]byte, error) {
 
 // America Let the star spangled banner of the free and the brave soar.
 // Docs:  https://dagpi.docs.apiary.io/#reference/images-api/america/america
-func America(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/america/?url=" + url)
+func (c *Client) America(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/america/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -300,8 +298,8 @@ func America(url string) ([]byte, error) {
 
 // Communism Support the soviet union comrade. Let the red flag fly!
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/communism/communism
-func Communism(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/communism/?url=" + url)
+func (c *Client) Communism(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/communism/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -311,8 +309,8 @@ func Communism(url string) ([]byte, error) {
 
 // Triggered Allows you to get a triggered gif.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/triggered/triggered
-func Triggered(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/triggered/?url=" + url)
+func (c *Client) Triggered(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/triggered/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -322,8 +320,8 @@ func Triggered(url string) ([]byte, error) {
 
 // ExpandImage animation that streches an image.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/expand/expand
-func ExpandImage(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/expand/?url=" + url)
+func (c *Client) ExpandImage(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/expand/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -333,8 +331,8 @@ func ExpandImage(url string) ([]byte, error) {
 
 // Wasted Allows you to get an image with GTA V Wasted screen.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/wasted/wasted
-func Wasted(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/wasted/?url=" + url)
+func (c *Client) Wasted(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/wasted/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -344,8 +342,8 @@ func Wasted(url string) ([]byte, error) {
 
 // Sketch Cool efffect that shows how an image would have been created by an artist.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/sketch/sketch
-func Sketch(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/sketch/?url=" + url)
+func (c *Client) Sketch(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/sketch/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -355,8 +353,8 @@ func Sketch(url string) ([]byte, error) {
 
 // SpinImage You spin me right round baby.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/spin/spin
-func SpinImage(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/spin/?url=" + url)
+func (c *Client) SpinImage(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/spin/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -366,8 +364,8 @@ func SpinImage(url string) ([]byte, error) {
 
 // PetPet Pet pet gif
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/petpet/petpet
-func PetPet(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/petpet/?url=" + url)
+func (c *Client) PetPet(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/petpet/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -377,8 +375,8 @@ func PetPet(url string) ([]byte, error) {
 
 // Bonk Get bonked on my cheems
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/bonk/bonk
-func Bonk(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/bonk/?url=" + url)
+func (c *Client) Bonk(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/bonk/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -388,8 +386,8 @@ func Bonk(url string) ([]byte, error) {
 
 // Bomb Explosion
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/bomb/bomb
-func Bomb(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/bomb/?url=" + url)
+func (c *Client) Bomb(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/bomb/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -399,8 +397,8 @@ func Bomb(url string) ([]byte, error) {
 
 // Shake a gif by having it wiggle.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/shake/shake
-func Shake(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/shake/?url=" + url)
+func (c *Client) Shake(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/shake/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -410,8 +408,8 @@ func Shake(url string) ([]byte, error) {
 
 // Invert Allows you to get an image with an inverted color effect.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/invert/invert
-func Invert(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/invert/?url=" + url)
+func (c *Client) Invert(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/invert/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -421,8 +419,8 @@ func Invert(url string) ([]byte, error) {
 
 // Sobel Allows you to get an image with the sobel effect.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/sobel/sobel
-func Sobel(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/sobel/?url=" + url)
+func (c *Client) Sobel(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/sobel/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -432,8 +430,8 @@ func Sobel(url string) ([]byte, error) {
 
 // Hog Histogram of Oriented Gradients for an image.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/hog/hog
-func Hog(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/hog/?url=" + url)
+func (c *Client) Hog(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/hog/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -443,8 +441,8 @@ func Hog(url string) ([]byte, error) {
 
 // Triangle Cool triangle effect for an image.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/triangle/triangle
-func Triangle(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/triangle/?url=" + url)
+func (c *Client) Triangle(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/triangle/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -454,8 +452,8 @@ func Triangle(url string) ([]byte, error) {
 
 // Blur Blurs a given image.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/blur/blur
-func Blur(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/blur/?url=" + url)
+func (c *Client) Blur(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/blur/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -465,8 +463,8 @@ func Blur(url string) ([]byte, error) {
 
 // RGB Get an RGB graph of an image's colors.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/rgb/rgb
-func RGB(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/rgb/?url=" + url)
+func (c *Client) RGB(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/rgb/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -476,8 +474,8 @@ func RGB(url string) ([]byte, error) {
 
 // Angel Image on the Angels face.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/angel/angel
-func Angel(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/angel/?url=" + url)
+func (c *Client) Angel(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/angel/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -487,8 +485,8 @@ func Angel(url string) ([]byte, error) {
 
 // Satan Put an image on the devil.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/satan/satan
-func Satan(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/satan/?url=" + url)
+func (c *Client) Satan(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/satan/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -498,8 +496,8 @@ func Satan(url string) ([]byte, error) {
 
 // Delete Generates a windows error meme based on a given image.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/delete/delete
-func Delete(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/delete/?url=" + url)
+func (c *Client) Delete(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/delete/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -509,8 +507,8 @@ func Delete(url string) ([]byte, error) {
 
 // Fedora Tips fedora in appreciation. Perry the Platypus.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/fedora/fedora
-func Fedora(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/fedora/?url=" + url)
+func (c *Client) Fedora(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/fedora/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -520,8 +518,8 @@ func Fedora(url string) ([]byte, error) {
 
 // Hitler ?????
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/hitler/hitler
-func Hitler(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/hitler/?url=" + url)
+func (c *Client) Hitler(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/hitler/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -531,8 +529,8 @@ func Hitler(url string) ([]byte, error) {
 
 // Lego Every group of pixels is a lego brick
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/lego/lego
-func Lego(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/lego/?url=" + url)
+func (c *Client) Lego(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/lego/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -542,8 +540,8 @@ func Lego(url string) ([]byte, error) {
 
 // Wanted poster of an image.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/wanted/wanted
-func Wanted(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/wanted/?url=" + url)
+func (c *Client) Wanted(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/wanted/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -553,8 +551,8 @@ func Wanted(url string) ([]byte, error) {
 
 // Stringify Turn your image into a ball of yarn.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/stringify/stringify
-func Stringify(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/stringify/?url=" + url)
+func (c *Client) Stringify(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/stringify/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -564,8 +562,8 @@ func Stringify(url string) ([]byte, error) {
 
 // Burn Light your image on fire
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/burn/burn
-func Burn(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/burn/?url=" + url)
+func (c *Client) Burn(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/burn/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -575,8 +573,8 @@ func Burn(url string) ([]byte, error) {
 
 // Earth The green and blue of the earth
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/earth/earth
-func Earth(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/earth/?url=" + url)
+func (c *Client) Earth(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/earth/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -586,8 +584,8 @@ func Earth(url string) ([]byte, error) {
 
 // Freeze Blue ice like tint.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/freeze/freeze
-func Freeze(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/freeze/?url=" + url)
+func (c *Client) Freeze(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/freeze/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -597,8 +595,8 @@ func Freeze(url string) ([]byte, error) {
 
 // Ground The poower of the earth
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/earth/earth
-func Ground(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/ground/?url=" + url)
+func (c *Client) Ground(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/ground/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -608,8 +606,8 @@ func Ground(url string) ([]byte, error) {
 
 // Mosiac Turn an image into a roman mosiac.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/mosiac/mosiac
-func Mosiac(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/mosiac/?url=" + url)
+func (c *Client) Mosiac(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/mosiac/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -619,8 +617,8 @@ func Mosiac(url string) ([]byte, error) {
 
 // Sithlord Put an image on the Laughs in Sithlord meme.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/sithlord/sithlord
-func Sithlord(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/sith/?url=" + url)
+func (c *Client) Sithlord(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/sith/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -630,8 +628,8 @@ func Sithlord(url string) ([]byte, error) {
 
 // Jail Put an image behind bars.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/jail/jail
-func Jail(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/jail/?url=" + url)
+func (c *Client) Jail(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/jail/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -641,8 +639,8 @@ func Jail(url string) ([]byte, error) {
 
 // Shatter Put an image behind bars.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/shatter/shatter
-func Shatter(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/shatter/?url=" + url)
+func (c *Client) Shatter(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/shatter/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -653,7 +651,7 @@ func Shatter(url string) ([]byte, error) {
 // Pride Flag of your choice over an Image!
 // Available Choices: Asexual, Bisexual, Gay, Genderfluid, Genderqueer, Intersex, Lesbian, Nonbinary, Progress, Pan, Trans
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/pride/pride
-func Pride(url string, flag string) ([]byte, error) {
+func (c *Client) Pride(url string, flag string) ([]byte, error) {
 	acceptableFlags := []string{
 		"asexual",
 		"bisexual",
@@ -669,7 +667,7 @@ func Pride(url string, flag string) ([]byte, error) {
 	}
 	for _, acceptableFlag := range acceptableFlags {
 		if acceptableFlag == strings.ToLower(flag) {
-			imgBuffer, err := getImageBuffer("https://api.dagpi.xyz/image/pride/?url=" + url + "&flag=" + flag)
+			imgBuffer, err := getImageBuffer("https://api.dagpi.xyz/image/pride/?url="+url+"&flag="+flag, c)
 			if err != nil {
 				return nil, err
 			}
@@ -687,8 +685,8 @@ func Pride(url string, flag string) ([]byte, error) {
 
 // Trash Image is trash.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/trash/trash
-func Trash(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/trash/?url=" + url)
+func (c *Client) Trash(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/trash/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -698,8 +696,8 @@ func Trash(url string) ([]byte, error) {
 
 // Deepfry an image.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/deepfry/deepfry
-func Deepfry(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/deepfry/?url=" + url)
+func (c *Client) Deepfry(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/deepfry/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -709,8 +707,8 @@ func Deepfry(url string) ([]byte, error) {
 
 // Ascii Cool hackerman effect for an image.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/ascii/ascii
-func Ascii(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/ascii/?url=" + url)
+func (c *Client) Ascii(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/ascii/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -720,8 +718,8 @@ func Ascii(url string) ([]byte, error) {
 
 // Charcoal Image into a charcoal drawing.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/charcoal/charcoal
-func Charcoal(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/charcoal/?url=" + url)
+func (c *Client) Charcoal(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/charcoal/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -731,8 +729,8 @@ func Charcoal(url string) ([]byte, error) {
 
 // Posterize Posterizes an image.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/posterize/posterize
-func Posterize(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/poster/?url=" + url)
+func (c *Client) Posterize(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/poster/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -742,8 +740,8 @@ func Posterize(url string) ([]byte, error) {
 
 // Sepia Tone an image.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/sepia/sepia
-func Sepia(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/sepia/?url=" + url)
+func (c *Client) Sepia(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/sepia/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -753,8 +751,8 @@ func Sepia(url string) ([]byte, error) {
 
 // Swirl an image.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/swirl/swirl
-func Swirl(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/swirl/?url=" + url)
+func (c *Client) Swirl(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/swirl/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -764,8 +762,8 @@ func Swirl(url string) ([]byte, error) {
 
 // Paint Turn an image into art.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/paint/paint
-func Paint(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/paint/?url=" + url)
+func (c *Client) Paint(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/paint/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -775,8 +773,8 @@ func Paint(url string) ([]byte, error) {
 
 // Night Turn an day into night.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/night/night
-func Night(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/night/?url=" + url)
+func (c *Client) Night(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/night/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -786,8 +784,8 @@ func Night(url string) ([]byte, error) {
 
 // Rainbow Some trippy light effects.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/rainbow/rainbow
-func Rainbow(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/rainbow/?url=" + url)
+func (c *Client) Rainbow(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/rainbow/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -797,8 +795,8 @@ func Rainbow(url string) ([]byte, error) {
 
 // Magik The much loved magik endpoint.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/magik/magik
-func Magik(url string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/magik/?url=" + url)
+func (c *Client) Magik(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/magik/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}
@@ -808,8 +806,8 @@ func Magik(url string) ([]byte, error) {
 
 // FivegOneg The meme.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/five-guys-one-girl/five-guys-one-girl
-func FivegOneg(url1 string, url2 string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/5g1g/?url=" + url1 + "&url2=" + url2)
+func (c *Client) FivegOneg(url1 string, url2 string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/5g1g/?url="+url1+"&url2="+url2, c)
 	if err != nil {
 		return nil, err
 	}
@@ -819,8 +817,8 @@ func FivegOneg(url1 string, url2 string) ([]byte, error) {
 
 // WhyAreYouGay The meme.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/why-are-you-gay/why-are-you-gay
-func WhyAreYouGay(url1 string, url2 string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/whyareyougay/?url=" + url1 + "&url2=" + url2)
+func (c *Client) WhyAreYouGay(url1 string, url2 string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/whyareyougay/?url="+url1+"&url2="+url2, c)
 	if err != nil {
 		return nil, err
 	}
@@ -830,8 +828,8 @@ func WhyAreYouGay(url1 string, url2 string) ([]byte, error) {
 
 // Slap Have one image slap another.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/slap/slap
-func Slap(url1 string, url2 string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/slap/?url=" + url1 + "&url2=" + url2)
+func (c *Client) Slap(url1 string, url2 string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/slap/?url="+url1+"&url2="+url2, c)
 	if err != nil {
 		return nil, err
 	}
@@ -841,8 +839,8 @@ func Slap(url1 string, url2 string) ([]byte, error) {
 
 // Obama The meme.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/obama/obama
-func Obama(url1 string, url2 string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/obama/?url=" + url1 + "&url2=" + url2)
+func (c *Client) Obama(url1 string, url2 string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/obama/?url="+url1+"&url2="+url2, c)
 	if err != nil {
 		return nil, err
 	}
@@ -852,8 +850,8 @@ func Obama(url1 string, url2 string) ([]byte, error) {
 
 // Tweet The meme.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/tweet/tweet
-func Tweet(url string, username string, text string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/tweet/?url=" + url + "&username=" + username + "&text=" + text)
+func (c *Client) Tweet(url string, username string, text string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/tweet/?url="+url+"&username="+username+"&text="+text, c)
 	if err != nil {
 		return nil, err
 	}
@@ -863,16 +861,16 @@ func Tweet(url string, username string, text string) ([]byte, error) {
 
 // YouTubeComment Generate realistic Youtube messages
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/youtube-comment/youtube-comment
-func YouTubeComment(url string, username string, text string, darkMode bool) ([]byte, error) {
+func (c *Client) YouTubeComment(url string, username string, text string, darkMode bool) ([]byte, error) {
 	if darkMode == true {
-		buffer, err := getImageBuffer("https://api.dagpi.xyz/image/yt/?url=" + url + "&username=" + username + "&text=" + text + "&dark=" + "true")
+		buffer, err := getImageBuffer("https://api.dagpi.xyz/image/yt/?url="+url+"&username="+username+"&text="+text+"&dark="+"true", c)
 		if err != nil {
 			return nil, err
 		}
 
 		return buffer, nil
 	} else {
-		buffer, err := getImageBuffer("https://api.dagpi.xyz/image/yt/?url=" + url + "&username=" + username + "&text=" + text + "&dark=" + "false")
+		buffer, err := getImageBuffer("https://api.dagpi.xyz/image/yt/?url="+url+"&username="+username+"&text="+text+"&dark="+"false", c)
 		if err != nil {
 			return nil, err
 		}
@@ -883,16 +881,16 @@ func YouTubeComment(url string, username string, text string, darkMode bool) ([]
 
 // Discord Generate realistic discord messages
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/discord/discord
-func Discord(url string, username string, text string, darkMode bool) ([]byte, error) {
+func (c *Client) Discord(url string, username string, text string, darkMode bool) ([]byte, error) {
 	if darkMode == true {
-		buffer, err := getImageBuffer("https://api.dagpi.xyz/image/discord/?url=" + url + "&username=" + username + "&text=" + text + "&dark=" + "true")
+		buffer, err := getImageBuffer("https://api.dagpi.xyz/image/discord/?url="+url+"&username="+username+"&text="+text+"&dark="+"true", c)
 		if err != nil {
 			return nil, err
 		}
 
 		return buffer, nil
 	} else {
-		buffer, err := getImageBuffer("https://api.dagpi.xyz/image/discord/?url=" + url + "&username=" + username + "&text=" + text + "&dark=" + "false")
+		buffer, err := getImageBuffer("https://api.dagpi.xyz/image/discord/?url="+url+"&username="+username+"&text="+text+"&dark="+"false", c)
 		if err != nil {
 			return nil, err
 		}
@@ -903,8 +901,8 @@ func Discord(url string, username string, text string, darkMode bool) ([]byte, e
 
 // Retromeme The good old memes. Generated.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/retromeme/retromeme
-func Retromeme(url string, topText string, bottomText string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/retromeme/?url=" + url + "&top_text=" + topText + "&bottom_text=" + bottomText)
+func (c *Client) Retromeme(url string, topText string, bottomText string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/retromeme/?url="+url+"&top_text="+topText+"&bottom_text="+bottomText, c)
 	if err != nil {
 		return nil, err
 	}
@@ -914,8 +912,8 @@ func Retromeme(url string, topText string, bottomText string) ([]byte, error) {
 
 // Motivational The black background with top and bottom motivational text.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/motivational/motivational
-func Motivational(url string, topText string, bottomText string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/motiv/?url=" + url + "&top_text=" + topText + "&bottom_text=" + bottomText)
+func (c *Client) Motivational(url string, topText string, bottomText string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/motiv/?url="+url+"&top_text="+topText+"&bottom_text="+bottomText, c)
 	if err != nil {
 		return nil, err
 	}
@@ -925,8 +923,8 @@ func Motivational(url string, topText string, bottomText string) ([]byte, error)
 
 // Modernmeme A modern meme generation system that allows reddit ready memes with just one endpoint.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/modernmeme/modernmeme
-func Modernmeme(url string, text string) ([]byte, error) {
-	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/modernmeme/?url=" + url + "&text=" + text)
+func (c *Client) Modernmeme(url string, text string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/modernmeme/?url="+url+"&text="+text, c)
 	if err != nil {
 		return nil, err
 	}
