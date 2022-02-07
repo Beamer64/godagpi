@@ -6,13 +6,13 @@ New API Routes, Descriptions and links to Documentation will be updated as soon 
 Import godagpi to your project:
 
 ```
-go get github.com/beamer64/dagpiwrapper/dagpi
+go get github.com/beamer64/godagpi/dagpi
 ```
 
 Incase you need to update:
 
 ```
-go get -u github.com/beamer64/dagpiwrapper/dagpi
+go get -u github.com/beamer64/godagpi/dagpi
 ```
 
 Initialize your client with
