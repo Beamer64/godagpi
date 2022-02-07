@@ -12,7 +12,22 @@ Api Documentation can be found [here](https://dagpi.docs.apiary.io/).
 <h2>Example</h2>
 
 ```
-test test
+import (
+	"fmt"
+	"github.com/beamer64/godagpi/dagpi"
+	"log"
+)
+
+func main() {
+	var client = dagpi.Client{Auth: "API Token"}
+
+	data, err := client.Roast()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(data)
+}
 ```
 ---
 
