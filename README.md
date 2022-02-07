@@ -3,6 +3,18 @@ Go wrapper for Dagpi API. All functions should have a small description even its
 
 New API Routes, Descriptions and links to Documentation will be updated as soon as I'm aware of them.
 
+Import godagpi to your project:
+
+```
+go get github.com/beamer64/dagpiwrapper/dagpi
+```
+
+Incase you need to update:
+
+```
+go get -u github.com/beamer64/dagpiwrapper/dagpi
+```
+
 Initialize your client with
 
 ```
