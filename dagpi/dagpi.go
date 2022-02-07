@@ -77,6 +77,8 @@ func getImageBuffer(url string, c *Client) ([]byte, error) {
 	return body, nil
 }
 
+// As new routes are created in the API, their method calls will be added to the bottom of their respective region
+
 //region Data API calls
 
 // WTP returns an interface with all the Pokemon data
@@ -925,6 +927,61 @@ func (c *Client) Motivational(url string, topText string, bottomText string) ([]
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/modernmeme/modernmeme
 func (c *Client) Modernmeme(url string, text string) ([]byte, error) {
 	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/modernmeme/?url="+url+"&text="+text, c)
+	if err != nil {
+		return nil, err
+	}
+
+	return buffer, nil
+}
+
+// Elmo Burning Elmo Meme
+// Docs: todo add docs when available
+func (c *Client) Elmo(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/elmo/?url="+url, c)
+	if err != nil {
+		return nil, err
+	}
+
+	return buffer, nil
+}
+
+// TvStatic Its TV static
+// Docs: todo add docs when available
+func (c *Client) TvStatic(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/tv/?url="+url, c)
+	if err != nil {
+		return nil, err
+	}
+
+	return buffer, nil
+}
+
+// Glitch todo add description when available
+// Docs: todo add docs when available
+func (c *Client) Glitch(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/glitch/?url="+url, c)
+	if err != nil {
+		return nil, err
+	}
+
+	return buffer, nil
+}
+
+// GlitchStatic todo add description when available
+// Docs: todo add docs when available
+func (c *Client) GlitchStatic(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/glitchstatic/?url="+url, c)
+	if err != nil {
+		return nil, err
+	}
+
+	return buffer, nil
+}
+
+// Album Make an Album cover!
+// Docs: todo add docs when available
+func (c *Client) Album(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/album/?url="+url, c)
 	if err != nil {
 		return nil, err
 	}

@@ -1,5 +1,7 @@
 # godagpi
-Go wrapper for Dagpi API. All functions should have a small desciption even its vague (copy pasta from the Docs) and a link to the call in the documentation.
+Go wrapper for Dagpi API. All functions should have a small description even its vague (copy pasta from the Docs) and a link to the call in the documentation.
+
+New API Routes, Descriptions and links to Documentation will be updated as soon as I'm aware of them.
 
 Initialize your client with
 
@@ -12,7 +14,22 @@ Api Documentation can be found [here](https://dagpi.docs.apiary.io/).
 <h2>Example</h2>
 
 ```
-test test
+import (
+	"fmt"
+	"github.com/beamer64/godagpi/dagpi"
+	"log"
+)
+
+func main() {
+	var client = dagpi.Client{Auth: "API Token"}
+
+	data, err := client.Roast()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(data)
+}
 ```
 ---
 
@@ -91,6 +108,12 @@ test test
 * dagpi.Night
 * dagpi.Rainbow
 * dagpi.Magik
+* dagpi.Elmo
+* dagpi.TVStatic
+* dagpi.Rain
+* dagpi.Glitch
+* dagpi.StaticGlitch
+* dagpi.Album
 * dagpi.FivegOneg(imageUrl1, imageUrl2) / Five Guys One Girl
 * dagpi.WhyAreYouGay(imageUrl1, imageUrl2)
 * dagpi.Slap(imageUrl1, imageUrl2)
