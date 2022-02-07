@@ -287,7 +287,7 @@ func (c *Client) Colors(url string) ([]byte, error) {
 	return buffer, nil
 }
 
-// America Let the star spangled banner of the free and the brave soar.
+// America Let the star-spangled banner of the free and the brave soar.
 // Docs:  https://dagpi.docs.apiary.io/#reference/images-api/america/america
 func (c *Client) America(url string) ([]byte, error) {
 	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/america/?url="+url, c)
@@ -496,7 +496,7 @@ func (c *Client) Satan(url string) ([]byte, error) {
 	return buffer, nil
 }
 
-// Delete Generates a windows error meme based on a given image.
+// Delete Generates a Windows error meme based on a given image.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/delete/delete
 func (c *Client) Delete(url string) ([]byte, error) {
 	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/delete/?url="+url, c)
@@ -773,7 +773,7 @@ func (c *Client) Paint(url string) ([]byte, error) {
 	return buffer, nil
 }
 
-// Night Turn an day into night.
+// Night Turn a day into night.
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/night/night
 func (c *Client) Night(url string) ([]byte, error) {
 	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/night/?url="+url, c)
@@ -861,7 +861,7 @@ func (c *Client) Tweet(url string, username string, text string) ([]byte, error)
 	return buffer, nil
 }
 
-// YouTubeComment Generate realistic Youtube messages
+// YouTubeComment Generate realistic YouTube messages
 // Docs: https://dagpi.docs.apiary.io/#reference/images-api/youtube-comment/youtube-comment
 func (c *Client) YouTubeComment(url string, username string, text string, darkMode bool) ([]byte, error) {
 	if darkMode == true {
