@@ -3,6 +3,7 @@ package dagpi
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -675,14 +676,11 @@ func (c *Client) Pride(url string, flag string) ([]byte, error) {
 			}
 
 			return imgBuffer, nil
-		} else {
-			err := errors.New("that pride flag is not accepted\nfunc Pride(url string, flag string) ([]byte, error)")
-
-			return nil, err
 		}
 	}
+	err := errors.New(fmt.Sprintf("the '%s' pride flag is not accepted\nfunc Pride(url string, flag string) ([]byte, error)", flag))
 
-	return nil, nil
+	return nil, err
 }
 
 // Trash Image is trash.
