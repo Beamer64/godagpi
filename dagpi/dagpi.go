@@ -954,6 +954,17 @@ func (c *Client) TvStatic(url string) ([]byte, error) {
 	return buffer, nil
 }
 
+// Rain Its TV static
+// Docs: todo add docs when available
+func (c *Client) Rain(url string) ([]byte, error) {
+	buffer, err := getImageBuffer("https://api.dagpi.xyz/image/rain/?url="+url, c)
+	if err != nil {
+		return nil, err
+	}
+
+	return buffer, nil
+}
+
 // Glitch todo add description when available
 // Docs: todo add docs when available
 func (c *Client) Glitch(url string) ([]byte, error) {
